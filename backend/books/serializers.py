@@ -1,6 +1,8 @@
 from rest_framework import serializers
 from decimal import Decimal
-from .models import Review, Catagory, Book, BookImage, Rating
+from .models import Review, Catagory, Book, BookImage, Rating, BuyBook
+from core.models import User
+from core.serializers import UserProfileSerializer
 
 class CatagorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -54,3 +56,18 @@ class RatingSerializer(serializers.ModelSerializer):
         book_id = self.context['book_id']
         user_id = self.context['request'].user.id
         return Rating.objects.create(book_id=book_id, user_id=user_id, **validated_data)
+    
+
+class BuyBookSerializer(serializers.ModelSerializer):
+    book = BookSerializer(read_only=True) 
+    buyer = UserProfileSerializer(read_only=True) 
+    book_id = serializers.PrimaryKeyRelatedField(
+        queryset=Book.objects.all(), source='book', write_only=True
+    )
+    buyer_id = serializers.PrimaryKeyRelatedField(
+        queryset=User.objects.all(), source='buyer', write_only=True
+    )
+
+    class Meta:
+        model = BuyBook
+        fields = ['id', 'book', 'buyer', 'cancel', 'sold', 'date', 'book_id', 'buyer_id']

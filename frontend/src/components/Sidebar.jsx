@@ -34,6 +34,11 @@ const links = [
         role: ["USER"],
         icon: <ImProfile />,
       },
+      {
+        name: "book-requests",
+        role: ["USER"],
+        icon: <ImProfile />,
+      },
     ],
   },
   {

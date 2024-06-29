@@ -28,3 +28,13 @@ class Review(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
     date = models.DateField(auto_now_add=True)
+
+
+class BuyBook(models.Model):
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    buyer = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    cancel = models.BooleanField(default=False, null=True, blank=True)
+    sold = models.BooleanField(default=False, null=True, blank=True)
+
+    date = models.DateTimeField(auto_now_add=True)

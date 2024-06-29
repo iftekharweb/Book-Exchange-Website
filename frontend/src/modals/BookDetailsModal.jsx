@@ -2,7 +2,10 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { MdOutlineCancel } from "react-icons/md";
 
+import { useStateContext } from "../contexts/ContextProvider";
+
 const BookDetailsModal = ({ handleDetails, book }) => {
+  const {authUserId} = useStateContext();
   const [owner, setOwner] = useState({});
 
   const fetchUser = async () => {
@@ -16,6 +19,22 @@ const BookDetailsModal = ({ handleDetails, book }) => {
   useEffect(()=> {
     fetchUser();
   },[])
+
+  const handleBuy = async () => {
+    try {
+      const res = await axios.post(`${import.meta.env.VITE_BASEURL}/buybooks/`,{
+        cancel: false,
+        sold: false,
+        book_id: book.id,
+        buyer_id: authUserId,
+      },);
+      if(res.data) {
+        alert("All Ok");
+      } 
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center">
@@ -103,7 +122,7 @@ const BookDetailsModal = ({ handleDetails, book }) => {
               </div>
 
               <div className="flex justify-between items-center">
-                <button className="mr-3 border border-[#FF7F3E] hover:bg-[#FF7F3E] hover:text-white rounded-md font-semibold px-6 py-2">
+                <button className="mr-3 border border-[#FF7F3E] hover:bg-[#FF7F3E] hover:text-white rounded-md font-semibold px-6 py-2" onClick={handleBuy}>
                   Buy
                 </button>
                 <button className="mr-3 border border-[#FF7F3E] hover:bg-[#FF7F3E] hover:text-white rounded-md font-semibold px-6 py-2">

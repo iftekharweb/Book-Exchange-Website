@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import { Navbar, Footer, Sidebar } from "./components";
-import { Dashboard, Profile, Login, Signup, UserBooks } from "./pages";
+import { Dashboard, Profile, Login, Signup, UserBooks, BookRequests } from "./pages";
 import { useStateContext } from "./contexts/ContextProvider";
 
 const AuthenticatedRoutes = () => {
@@ -54,6 +54,7 @@ const AuthenticatedRoutes = () => {
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/user-books" element={<UserBooks />} />
+              <Route path="/book-requests" element={<BookRequests />} />
               <Route path="/all-genres" element={<Dashboard />} />
               <Route path="*" element={<Navigate to="/" />} />
             </Routes>
