@@ -1,37 +1,25 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import BookDetailsModal from "../modals/BookDetailsModal";
 
-import { useStateContext } from "../contexts/ContextProvider";
-import AddBookModal from "../modals/AddBookModal";
-import EditBookModal from "../modals/EditBookModal";
-
-const UserBooks = () => {
-  const { authUserId } = useStateContext();
-
+const AllGebresBook = () => {
   const [books, setBooks] = useState([]);
   const [filteredBooks, setFilteredBooks] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOption, setSortOption] = useState("");
   const [priceRange, setPriceRange] = useState({ min: 0, max: 1000 });
 
-  const [adding, setAdding] = useState(false);
-  const [edit, setEdit] = useState(false);
-  const [currBook, setCurrBook] = useState({});
+  const [carding, setCarding] = useState(false);
+  const [currentBook, setCurrentBook] = useState({});
 
-  const handleAdd = () => setAdding(!adding);
-  const handleEdit = () => {
-    console.log("clicked")
-    setEdit(!edit);
-  }
+  const handleDetails = () => setCarding(!carding);
 
   const fetchBooks = async () => {
     try {
-      const res = await axios.get(
-        `${import.meta.env.VITE_BASEURL}/user-books/?user=${authUserId}`
-      );
+      const res = await axios.get(`${import.meta.env.VITE_BASEURL}/books/`);
       if (res.data) {
         setBooks(res.data);
-        setFilteredBooks(res.data);
+        setFilteredBooks(res.data); // Initialize filteredBooks with the full book list
       }
     } catch (error) {
       console.error(error);
@@ -80,35 +68,27 @@ const UserBooks = () => {
 
   return (
     <div className="p-0">
-      {adding && <AddBookModal handleAdd={handleAdd} user={authUserId} fetchBooks={fetchBooks}/>}
-      {edit && <EditBookModal handleEdit={handleEdit} user={authUserId} fetchBooks={fetchBooks} book={currBook}/>}
+      {
+        carding && <BookDetailsModal handleDetails={handleDetails} book={currentBook}/>
+      }
       <section>
         <div className="mx-auto max-w-screen-xl px-2 py-8 sm:px-4 sm:py-12 lg:px-6">
           <header className="flex items-center justify-between">
             <h2 className="text-xl font-bold text-gray-900 sm:text-3xl">
-              Your Books
+              All Book Collection
             </h2>
-            <div className="flex">
-              <input
-                type="text"
-                placeholder="Search books..."
-                className="border rounded py-2 px-4 text-sm"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-              <button
-                className="ml-2 py-2 px-3 bg-[#FF7F3E] rounded-sm font-semibold text-white"
-                onClick={handleAdd}
-              >
-                Add book
-              </button>
-            </div>
+            <input
+              type="text"
+              placeholder="Search books..."
+              className="border rounded py-2 px-4 text-sm"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
           </header>
 
           <div className="mt-8 sm:flex sm:items-center sm:justify-between">
             <div className="block sm:hidden">
-              <button className="flex cursor-pointer items-center gap-2 border-b border-gray-400 pb-1 text-gray-900 transition hover:border-gray-600"
-              >
+              <button className="flex cursor-pointer items-center gap-2 border-b border-gray-400 pb-1 text-gray-900 transition hover:border-gray-600">
                 <span className="text-sm font-medium"> Filters & Sorting </span>
 
                 <svg
@@ -150,7 +130,7 @@ const UserBooks = () => {
                       </svg>
                     </span>
                   </summary>
-                  <div className="group-open:absolute group-open:top-auto group-open:mt-2 ltr:group-open:start-0">
+                  <div className="z-50 group-open:absolute group-open:top-auto group-open:mt-2 ltr:group-open:start-0">
                     <div className="w-96 rounded border border-gray-200 bg-white">
                       <header className="flex items-center justify-between p-4">
                         <span className="text-sm text-gray-700">
@@ -234,12 +214,10 @@ const UserBooks = () => {
           <ul className="mt-4 grid gap-6 sm:grid-cols-3 lg:grid-cols-6">
             {filteredBooks.map((book) => (
               <li className="shadow-md flex flex-col" key={book.id}>
-                <button className="group block overflow-hidden flex-grow"
-                onClick={() => {
-                  setCurrBook(book);
-                  handleEdit();
-                }}
-                >
+                <button className="group block overflow-hidden flex-grow" onClick={() => {
+                  setCurrentBook(book);
+                  handleDetails();
+                }}>
                   <img
                     src={book?.images[0]?.image}
                     alt=""
@@ -267,4 +245,4 @@ const UserBooks = () => {
   );
 };
 
-export default UserBooks;
+export default AllGebresBook;
