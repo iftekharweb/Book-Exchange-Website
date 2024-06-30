@@ -17,4 +17,5 @@ books_router.register('ratings', views.RatingViewSet, basename='book-ratings')
 urlpatterns = router.urls + books_router.urls + [
     path('user-books/', views.UserBooksListView.as_view(), name='user-books-list'),
     path('buy-requests/', views.buy_requests_by_user, name='buy-requests-by-user'),
+    path('buy-orders/', views.buy_orders_by_user, name='buy-orders-by-user'),
 ]

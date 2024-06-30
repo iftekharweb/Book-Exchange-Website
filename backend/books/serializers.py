@@ -61,6 +61,7 @@ class RatingSerializer(serializers.ModelSerializer):
 class BuyBookSerializer(serializers.ModelSerializer):
     book = BookSerializer(read_only=True) 
     buyer = UserProfileSerializer(read_only=True) 
+    owner = serializers.SerializerMethodField()
     book_id = serializers.PrimaryKeyRelatedField(
         queryset=Book.objects.all(), source='book', write_only=True
     )
@@ -70,4 +71,8 @@ class BuyBookSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = BuyBook
-        fields = ['id', 'book', 'buyer', 'cancel', 'sold', 'date', 'book_id', 'buyer_id']
+        fields = ['id', 'book', 'buyer','owner', 'cancel', 'sold', 'date', 'book_id', 'buyer_id']
+        read_only_fields = ['owner'] 
+
+    def get_owner(self, obj):
+        return UserProfileSerializer(obj.book.user).data

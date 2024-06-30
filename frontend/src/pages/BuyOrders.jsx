@@ -2,30 +2,26 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useStateContext } from "../contexts/ContextProvider";
 
-const BookRequests = () => {
+const BuyOrders = () => {
   const { authUserId } = useStateContext();
 
   const [reqs, setReqs] = useState([]);
-  const [allReqs, setAllReqs] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const reqsPerPage = 10;
 
-  const fetchRequestsData = async () => {
+  const fetchRequests = async () => {
     try {
-      const [buyRequestsRes, allBuyRequestsRes] = await Promise.all([
-        axios.get(
-          `${import.meta.env.VITE_BASEURL}/buy-requests/?user=${authUserId}`
-        ),
-        axios.get(`${import.meta.env.VITE_BASEURL}/buybooks/`),
-      ]);
-      setReqs(buyRequestsRes.data);
-      setAllReqs(allBuyRequestsRes.data);
+      const res = await axios.get(
+        `${import.meta.env.VITE_BASEURL}/buy-orders/?user=${authUserId}`
+      );
+      console.log(authUserId);
+      setReqs(res.data);
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.error(error);
     }
   };
   useEffect(() => {
-    fetchRequestsData();
+    fetchRequests();
   }, []);
 
   const totalPages = Math.ceil(reqs.length / reqsPerPage);
@@ -45,37 +41,7 @@ const BookRequests = () => {
       const res = await axios.delete(
         `${import.meta.env.VITE_BASEURL}/buybooks/${reqId}/`
       );
-      fetchRequestsData();
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const deleteTheBook = async (reqId) => {
-    console.log(reqId);
-    try {
-      const res = await axios.delete(
-        `${import.meta.env.VITE_BASEURL}/buybooks/${reqId}/`
-      );
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  const handleConfirm = async (req) => {
-    console.log(req);
-    try {
-      const res = await axios.patch(
-        `${import.meta.env.VITE_BASEURL}/books/${req.book.id}/`,
-        {
-          user: req.buyer.id,
-        }
-      );
-      if (res.data) {
-        allReqs.forEach((x) => {
-          if (x.book.id === req.book.id) deleteTheBook(req.id);
-        });
-        fetchRequestsData();
-      }
+      fetchRequests();
     } catch (error) {
       console.error(error);
     }
@@ -85,7 +51,7 @@ const BookRequests = () => {
     <div className="py-5 px-10">
       <div className="pb-5">
         <p className="text-3xl font-serif font-semibold">
-          Books requests to you
+          Books orders for buying
         </p>
       </div>
       <div className="rounded-lg border border-gray-200">
@@ -94,7 +60,7 @@ const BookRequests = () => {
             <thead>
               <tr>
                 <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">
-                  Requested Buyer
+                  Book owner
                 </th>
                 <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">
                   Address
@@ -109,7 +75,7 @@ const BookRequests = () => {
                   Book Image
                 </th>
                 <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">
-                  Confirm/Cancel
+                  Cancel Order
                 </th>
               </tr>
             </thead>
@@ -117,13 +83,13 @@ const BookRequests = () => {
               {currentReqs.map((req) => (
                 <tr key={req.id}>
                   <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">
-                    {req.buyer.name}
+                    {req.owner.name}
                   </td>
                   <td className="whitespace-nowrap px-4 py-2 text-gray-700 text-center">
-                    {req.buyer.district} {"-"} {req.buyer.upazilla}
+                    {req.owner.district} {"-"} {req.owner.upazilla}
                   </td>
                   <td className="whitespace-nowrap px-4 py-2 text-gray-700 text-center">
-                    {req.buyer.phone}
+                    {req.owner.phone}
                   </td>
                   <td className="whitespace-nowrap px-4 py-2 text-gray-700 text-center">
                     <div className="flex flex-col justify-start item-center">
@@ -155,12 +121,6 @@ const BookRequests = () => {
                   <td className="whitespace-nowrap px-4 py-2 text-gray-700 text-center">
                     <div className="flex justify-center items-center">
                       <div className="flex justify-center items-center">
-                        <button
-                          className="mr-3 border text-green-500 border-green-500 hover:bg-green-500 hover:text-white rounded-md font-semibold px-3 py-1"
-                          onClick={() => handleConfirm(req)}
-                        >
-                          Confirm
-                        </button>
                         <button
                           className="mr-3 border text-red-500 border-red-500 hover:bg-red-500 hover:text-white rounded-md font-semibold px-3 py-1"
                           onClick={() => handleCancel(req.id)}
@@ -241,4 +201,4 @@ const BookRequests = () => {
   );
 };
 
-export default BookRequests;
+export default BuyOrders;

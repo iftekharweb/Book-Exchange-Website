@@ -99,3 +99,13 @@ def buy_requests_by_user(request):
         return Response(serializer.data)
     else:
         return Response({"error": "User ID not provided"}, status=400)
+    
+@api_view(['GET'])
+def buy_orders_by_user(request):
+    user_id = request.query_params.get('user', None)
+    if user_id is not None:
+        buy_orders = BuyBook.objects.filter(buyer_id=user_id)
+        serializer = BuyBookSerializer(buy_orders, many=True)
+        return Response(serializer.data)
+    else:
+        return Response({"error": "User ID not provided"}, status=400)
