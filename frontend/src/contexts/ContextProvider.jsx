@@ -11,6 +11,10 @@ export const ContextProvider = ({ children }) => {
   const [authRole, setAuthRole] = useState("NONE");
   const [authName, setAuthName] = useState("");
 
+  const [userToSwap, setUserToSwap] = useState({});
+  const [bookToSwap, setBookToSwap] = useState({});
+  const [reqToSwap, setReqToSwap] = useState({});
+
   const [log, setLog] = useState(false);
   const [sign, setSign] = useState(false);
 
@@ -90,6 +94,12 @@ export const ContextProvider = ({ children }) => {
         setSign,
         changeLog,
         changeSign,
+        userToSwap,
+        setUserToSwap,
+        bookToSwap,
+        setBookToSwap,
+        reqToSwap,
+        setReqToSwap
       }}
     >
       {children}

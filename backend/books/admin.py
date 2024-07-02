@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.utils.html import format_html
-from .models import Catagory, Book, Rating, BookImage, Review
+from .models import Catagory, Book, Rating, BookImage, Review, BuyBook, SwapBook
 
 @admin.register(Catagory)
 class CategoryAdmin(admin.ModelAdmin):
@@ -53,4 +53,16 @@ class ReviewAdmin(admin.ModelAdmin):
     search_fields = ['book__title', 'name']
     list_filter = ['date']
     raw_id_fields = ['book']
+@admin.register(BuyBook)
+class BuyBookAdmin(admin.ModelAdmin):
+    list_display = ('book', 'buyer', 'cancel', 'sold', 'date')
+    search_fields = ('book__title', 'buyer__username')
+    list_filter = ('cancel', 'sold', 'date')
+    date_hierarchy = 'date'
+@admin.register(SwapBook)
+class SwapBookAdmin(admin.ModelAdmin):
+    list_display = ('book', 'buyer', 'selected_book', 'cancel', 'sold', 'date')
+    search_fields = ('book__title', 'buyer__username', 'selected_book__title')
+    list_filter = ('cancel', 'sold', 'date')
+    date_hierarchy = 'date'
 

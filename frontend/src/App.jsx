@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import { Navbar, Footer, Sidebar } from "./components";
-import { Dashboard, Profile, Login, Signup, UserBooks, BookRequests, BuyOrders, AllGebresBook } from "./pages";
+import { Dashboard, Profile, Login, Signup, UserBooks, BookRequests, BuyOrders, AllGebresBook, SwapOrders, SwapRequests, SelectBookToSwap } from "./pages";
 import { useStateContext } from "./contexts/ContextProvider";
 
 const AuthenticatedRoutes = () => {
@@ -50,12 +50,20 @@ const AuthenticatedRoutes = () => {
         <div className="w-full h-full flex flex-col justify-between items-center shadow-sm">
           <div className="w-full bg-[#FAFBFB] h-full">
             <Routes>
+              {/* Dashboard */}
               <Route path="/" element={<Dashboard />} />
               <Route path="/dashboard" element={<Dashboard />} />
+
+              {/* Pages */}
               <Route path="/profile" element={<Profile />} />
               <Route path="/user-books" element={<UserBooks />} />
               <Route path="/book-requests" element={<BookRequests />} />
               <Route path="/buy-orders" element={<BuyOrders />} />
+              <Route path="/swap-requests" element={<SwapRequests />} />
+              <Route path="/swap-orders" element={<SwapOrders />} />
+              <Route path="/select-book-to-swap" element={<SelectBookToSwap />} />
+
+              {/* Books */}
               <Route path="/all-genres" element={<AllGebresBook />} />
               <Route path="*" element={<Navigate to="/" />} />
             </Routes>

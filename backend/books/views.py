@@ -4,8 +4,8 @@ from rest_framework import status, generics
 from rest_framework.decorators import api_view
 from django.db.models.aggregates import Count
 
-from .models import Review, Book, Catagory, BookImage, Rating, BuyBook
-from.serializers import ReviewSerializer, BookSerializer, CatagorySerializer, BookImageSerializer, RatingSerializer, BuyBookSerializer
+from .models import Review, Book, Catagory, BookImage, Rating, BuyBook, SwapBook
+from.serializers import ReviewSerializer, BookSerializer, CatagorySerializer, BookImageSerializer, RatingSerializer, BuyBookSerializer, SwapBookSerializer
 
 
 class BookViewSet(ModelViewSet):
@@ -106,6 +106,30 @@ def buy_orders_by_user(request):
     if user_id is not None:
         buy_orders = BuyBook.objects.filter(buyer_id=user_id)
         serializer = BuyBookSerializer(buy_orders, many=True)
+        return Response(serializer.data)
+    else:
+        return Response({"error": "User ID not provided"}, status=400)
+    
+class SwapBookViewSet(ModelViewSet):
+    queryset = SwapBook.objects.all()
+    serializer_class = SwapBookSerializer
+    
+@api_view(['GET'])
+def swap_requests_by_user(request):
+    user_id = request.query_params.get('user', None)
+    if user_id is not None:
+        swap_requests = SwapBook.objects.filter(book__user_id=user_id)
+        serializer = SwapBookSerializer(swap_requests, many=True)
+        return Response(serializer.data)
+    else:
+        return Response({"error": "User ID not provided"}, status=400)
+    
+@api_view(['GET'])
+def swap_orders_by_user(request):
+    user_id = request.query_params.get('user', None)
+    if user_id is not None:
+        swap_orders = SwapBook.objects.filter(buyer_id=user_id)
+        serializer = SwapBookSerializer(swap_orders, many=True)
         return Response(serializer.data)
     else:
         return Response({"error": "User ID not provided"}, status=400)

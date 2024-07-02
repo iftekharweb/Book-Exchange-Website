@@ -6,3 +6,6 @@ export { default as UserBooks } from "./UserBooks";
 export { default as BookRequests } from "./BookRequests";
 export { default as BuyOrders } from "./BuyOrders";
 export { default as AllGebresBook } from "./AllGenresBook";
+export { default as SwapRequests } from "./SwapRequest";
+export { default as SwapOrders } from "./SwapOrders";
+export { default as SelectBookToSwap } from "./SelectBookToSwap";

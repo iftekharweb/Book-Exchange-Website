@@ -29,7 +29,23 @@ const BookDetailsModal = ({ handleDetails, book }) => {
         buyer_id: authUserId,
       },);
       if(res.data) {
-        alert("All Ok");
+        alert("This book is requested for buying.");
+      } 
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const handleSwap = async () => {
+    try {
+      const res = await axios.post(`${import.meta.env.VITE_BASEURL}/swapbooks/`,{
+        cancel: false,
+        sold: false,
+        book_id: book.id,
+        buyer_id: authUserId,
+      },);
+      if(res.data) {
+        alert("This book is requested for exchanging.");
       } 
     } catch (error) {
       console.error(error);
@@ -125,7 +141,7 @@ const BookDetailsModal = ({ handleDetails, book }) => {
                 <button className="mr-3 border border-[#FF7F3E] hover:bg-[#FF7F3E] hover:text-white rounded-md font-semibold px-6 py-2" onClick={handleBuy}>
                   Buy
                 </button>
-                <button className="mr-3 border border-[#FF7F3E] hover:bg-[#FF7F3E] hover:text-white rounded-md font-semibold px-6 py-2">
+                <button className="mr-3 border border-[#FF7F3E] hover:bg-[#FF7F3E] hover:text-white rounded-md font-semibold px-6 py-2" onClick={handleSwap}>
                   Swap
                 </button>
               </div>

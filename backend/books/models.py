@@ -38,3 +38,11 @@ class BuyBook(models.Model):
     sold = models.BooleanField(default=False, null=True, blank=True)
 
     date = models.DateTimeField(auto_now_add=True)
+
+class SwapBook(models.Model):
+    book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='swap_book_primary') 
+    buyer = models.ForeignKey(User, on_delete=models.CASCADE)
+    selected_book = models.ForeignKey(Book, on_delete=models.CASCADE, null=True, blank=True, related_name='swap_book_selected')
+    cancel = models.BooleanField(default=False, null=True, blank=True)
+    sold = models.BooleanField(default=False, null=True, blank=True)
+    date = models.DateTimeField(auto_now_add=True)

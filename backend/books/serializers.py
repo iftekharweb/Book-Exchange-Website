@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from decimal import Decimal
-from .models import Review, Catagory, Book, BookImage, Rating, BuyBook
+from .models import Review, Catagory, Book, BookImage, Rating, BuyBook, SwapBook
 from core.models import User
 from core.serializers import UserProfileSerializer
 
@@ -71,6 +71,25 @@ class BuyBookSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = BuyBook
+        fields = ['id', 'book', 'buyer','owner', 'cancel', 'sold', 'date', 'book_id', 'buyer_id']
+        read_only_fields = ['owner'] 
+
+    def get_owner(self, obj):
+        return UserProfileSerializer(obj.book.user).data
+
+class SwapBookSerializer(serializers.ModelSerializer):
+    book = BookSerializer(read_only=True) 
+    buyer = UserProfileSerializer(read_only=True) 
+    owner = serializers.SerializerMethodField()
+    book_id = serializers.PrimaryKeyRelatedField(
+        queryset=Book.objects.all(), source='book', write_only=True
+    )
+    buyer_id = serializers.PrimaryKeyRelatedField(
+        queryset=User.objects.all(), source='buyer', write_only=True
+    )
+
+    class Meta:
+        model = SwapBook
         fields = ['id', 'book', 'buyer','owner', 'cancel', 'sold', 'date', 'book_id', 'buyer_id']
         read_only_fields = ['owner'] 
 

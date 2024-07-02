@@ -44,6 +44,16 @@ const links = [
         role: ["USER"],
         icon: <ImProfile />,
       },
+      {
+        name: "swap-requests",
+        role: ["USER"],
+        icon: <ImProfile />,
+      },
+      {
+        name: "swap-orders",
+        role: ["USER"],
+        icon: <ImProfile />,
+      },
     ],
   },
   {
