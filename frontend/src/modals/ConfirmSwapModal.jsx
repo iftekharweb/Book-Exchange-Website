@@ -1,26 +1,35 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { MdOutlineCancel } from "react-icons/md";
-import FullLogo from '../assets/Full_Logo.png';
+import FullLogo from "../assets/Full_Logo.png";
 import { useStateContext } from "../contexts/ContextProvider";
+import { useNavigate } from "react-router-dom";
 
 const ConfirmSwapModal = ({ handleDetails, book }) => {
   const { authUserId, bookToSwap, reqToSwap } = useStateContext();
+  const navigate = useNavigate();
   const [owner, setOwner] = useState({});
   const [theUser, setTheUser] = useState({});
   const [theBook, setTheBook] = useState({});
 
+  const [allSwapReqs, setAllSwapReq] = useState([]);
+  const [allBuyReqs, setAllBuyReq] = useState([]);
+
   const fetchUser = async () => {
     try {
-      const [res, currUser, currBook] = await Promise.all([
+      const [res, currUser, currBook, swapReq, buyReq] = await Promise.all([
         axios.get(`${import.meta.env.VITE_BASEURL}/users/${book.user}/`),
         axios.get(`${import.meta.env.VITE_BASEURL}/users/${authUserId}/`),
-        axios.get(`${import.meta.env.VITE_BASEURL}/books/${bookToSwap.id}/`)
+        axios.get(`${import.meta.env.VITE_BASEURL}/books/${bookToSwap.id}/`),
+        axios.get(`${import.meta.env.VITE_BASEURL}/swapbooks/`),
+        axios.get(`${import.meta.env.VITE_BASEURL}/buybooks/`),
       ]);
       if (res.data) setOwner(res.data);
-      if (currUser.data) setTheUser(currUser.data)
-      if (currBook.data) setTheBook(currBook.data)
-      console.log(currBook.data);
+      if (currUser.data) setTheUser(currUser.data);
+      if (currBook.data) setTheBook(currBook.data);
+      if (swapReq.data) setAllSwapReq(swapReq.data);
+      if (buyReq.data) setAllBuyReq(buyReq.data);
+      console.log(book, theBook);
     } catch (error) {
       console.error(error);
     }
@@ -29,35 +38,46 @@ const ConfirmSwapModal = ({ handleDetails, book }) => {
     fetchUser();
   }, []);
 
-  // 
-  const deleteTheBook = async (reqId) => {
-    console.log(reqId);
+  //
+  const deleteTheBook = async (reqId, type) => {
     try {
-      const res = await axios.delete(
-        `${import.meta.env.VITE_BASEURL}/swapbooks/${reqId}/`
-      );
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  const handleConfirm = async (req) => {
-    try {
-      const res = await axios.patch(
-        `${import.meta.env.VITE_BASEURL}/books/${req.book.id}/`,
-        {
-          user: req.buyer.id,
-        }
-      );
-      if (res.data) {
-        allReqs.forEach((x) => {
-          if (x.book.id === req.book.id) deleteTheBook(req.id);
-        });
+      if (type === 1) {
+        const res = await axios.delete(
+          `${import.meta.env.VITE_BASEURL}/swapbooks/${reqId}/`
+        );
+      } else {
+        const res = await axios.delete(
+          `${import.meta.env.VITE_BASEURL}/buybooks/${reqId}/`
+        );
       }
     } catch (error) {
       console.error(error);
     }
   };
-  // 
+  const handleConfirm = async () => {
+    try {
+      const [res1, res2] = await Promise.all([
+        axios.patch(`${import.meta.env.VITE_BASEURL}/books/${theBook.id}/`, {
+          user: book.user,
+        }),
+        axios.patch(`${import.meta.env.VITE_BASEURL}/books/${book.id}/`, {
+          user: theBook.user,
+        }),
+      ]);
+      if (res1.data && res2.data) {
+        allSwapReqs.forEach((x) => {
+          if (x.book.id === theBook.id || x.book.id === book.id) deleteTheBook(x.id, 1);
+        });
+        allBuyReqs.forEach((x) => {
+          if (x.book.id === theBook.id || x.book.id === book.id) deleteTheBook(x.id, 100);
+        });
+        navigate("/swap-requests");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  //
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center">
@@ -151,11 +171,13 @@ const ConfirmSwapModal = ({ handleDetails, book }) => {
                   <dt className="text-sm font-medium text-gray-600">
                     Published
                   </dt>
-                  <dd className="text-xs text-gray-500">{theBook.publish_date}</dd>
+                  <dd className="text-xs text-gray-500">
+                    {theBook.publish_date}
+                  </dd>
                 </div>
 
                 <div className="flex justify-between items-center">
-                  <img src={FullLogo} alt=""  className="h-8 w-10"/>
+                  <img src={FullLogo} alt="" className="h-8 w-10" />
                 </div>
               </dl>
             </div>
@@ -238,14 +260,19 @@ const ConfirmSwapModal = ({ handleDetails, book }) => {
                 </div>
 
                 <div className="flex justify-between items-center">
-                  <img src={FullLogo} alt=""  className="h-8 w-10"/>
+                  <img src={FullLogo} alt="" className="h-8 w-10" />
                 </div>
               </dl>
             </div>
           </div>
           {/*  */}
           <div className="w-full flex justify-center items-center mt-4">
-          <button className="ml-2 py-2 px-3 bg-[#FF7F3E] rounded-md font-semibold text-white">Confirm Exchange</button>
+            <button
+              className="ml-2 py-2 px-3 bg-[#FF7F3E] rounded-md font-semibold text-white"
+              onClick={handleConfirm}
+            >
+              Confirm Exchange
+            </button>
           </div>
         </div>
       </div>

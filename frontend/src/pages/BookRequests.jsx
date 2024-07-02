@@ -7,19 +7,22 @@ const BookRequests = () => {
 
   const [reqs, setReqs] = useState([]);
   const [allReqs, setAllReqs] = useState([]);
+  const [allSwapReqs, setAllSwapReqs] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const reqsPerPage = 10;
 
   const fetchRequestsData = async () => {
     try {
-      const [buyRequestsRes, allBuyRequestsRes] = await Promise.all([
+      const [buyRequestsRes, allBuyRequestsRes, allSwapRequestsRes] = await Promise.all([
         axios.get(
           `${import.meta.env.VITE_BASEURL}/buy-requests/?user=${authUserId}`
         ),
         axios.get(`${import.meta.env.VITE_BASEURL}/buybooks/`),
+        axios.get(`${import.meta.env.VITE_BASEURL}/swapbooks/`),
       ]);
       setReqs(buyRequestsRes.data);
       setAllReqs(allBuyRequestsRes.data);
+      setAllSwapReqs(allSwapRequestsRes.data)
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -51,12 +54,18 @@ const BookRequests = () => {
     }
   };
 
-  const deleteTheBook = async (reqId) => {
+  const deleteTheBook = async (reqId, type) => {
     console.log(reqId);
     try {
-      const res = await axios.delete(
-        `${import.meta.env.VITE_BASEURL}/buybooks/${reqId}/`
-      );
+      if(type === 1) {
+        const res = await axios.delete(
+          `${import.meta.env.VITE_BASEURL}/buybooks/${reqId}/`
+        );
+      } else {
+        const res = await axios.delete(
+          `${import.meta.env.VITE_BASEURL}/swapbooks/${reqId}/`
+        );
+      }
     } catch (error) {
       console.error(error);
     }
@@ -72,7 +81,10 @@ const BookRequests = () => {
       );
       if (res.data) {
         allReqs.forEach((x) => {
-          if (x.book.id === req.book.id) deleteTheBook(req.id);
+          if (x.book.id === req.book.id) deleteTheBook(x.id, 1);
+        });
+        allSwapReqs.forEach((x) => {
+          if (x.book.id === req.book.id) deleteTheBook(x.id, 100);
         });
         fetchRequestsData();
       }

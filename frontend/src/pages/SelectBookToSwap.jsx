@@ -43,23 +43,19 @@ const SelectBookToSwap = () => {
     fetchBooks();
   }, []);
 
-  // Filter books based on search term and price range
   useEffect(() => {
     let updatedBooks = books;
 
-    // Filter by search term
     if (searchTerm) {
       updatedBooks = updatedBooks.filter((book) =>
         book.title.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
-    // Filter by price range
     updatedBooks = updatedBooks.filter(
       (book) => book.price >= priceRange.min && book.price <= priceRange.max
     );
 
-    // Sort books based on selected sort option
     if (sortOption) {
       const [key, order] = sortOption.split(", ");
       updatedBooks.sort((a, b) => {

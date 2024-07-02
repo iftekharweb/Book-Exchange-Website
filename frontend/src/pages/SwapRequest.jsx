@@ -53,17 +53,7 @@ const SwapRequests = () => {
       console.error(error);
     }
   };
-
-  const deleteTheBook = async (reqId) => {
-    console.log(reqId);
-    try {
-      const res = await axios.delete(
-        `${import.meta.env.VITE_BASEURL}/swapbooks/${reqId}/`
-      );
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  
   const handleConfirm = async (req) => {
     console.log(req);
     setUserToSwap(req.buyer);
@@ -71,22 +61,6 @@ const SwapRequests = () => {
     setReqToSwap(req);
     navigate("/select-book-to-swap");
     return;
-    try {
-      const res = await axios.patch(
-        `${import.meta.env.VITE_BASEURL}/books/${req.book.id}/`,
-        {
-          user: req.buyer.id,
-        }
-      );
-      if (res.data) {
-        allReqs.forEach((x) => {
-          if (x.book.id === req.book.id) deleteTheBook(req.id);
-        });
-        fetchRequestsData();
-      }
-    } catch (error) {
-      console.error(error);
-    }
   };
 
   return (
