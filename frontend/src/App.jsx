@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import { Navbar, Footer, Sidebar } from "./components";
-import { Dashboard, Profile, Login, Signup, UserBooks, BookRequests, BuyOrders, AllGebresBook, SwapOrders, SwapRequests, SelectBookToSwap } from "./pages";
+import { Dashboard, Profile, Login, Signup, UserBooks, BookRequests, BuyOrders, AllGebresBook, SwapOrders, SwapRequests, SelectBookToSwap, EducationCategoryBook, BusinessCategoryBook, ScienceCategoryBook, BiographyCategoryBook, PhilosophyCategoryBook, FictionCategoryBook } from "./pages";
 import { useStateContext } from "./contexts/ContextProvider";
 
 const AuthenticatedRoutes = () => {
@@ -65,6 +65,12 @@ const AuthenticatedRoutes = () => {
 
               {/* Books */}
               <Route path="/all-genres" element={<AllGebresBook />} />
+              <Route path="/education" element={<EducationCategoryBook />} />
+              <Route path="/business" element={<BusinessCategoryBook />} />
+              <Route path="/science" element={<ScienceCategoryBook />} />
+              <Route path="/biography" element={<BiographyCategoryBook />} />
+              <Route path="/philosophy" element={<PhilosophyCategoryBook />} />
+              <Route path="/fiction" element={<FictionCategoryBook />} />
               <Route path="*" element={<Navigate to="/" />} />
             </Routes>
           </div>

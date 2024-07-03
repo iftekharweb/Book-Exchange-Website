@@ -9,3 +9,10 @@ export { default as AllGebresBook } from "./AllGenresBook";
 export { default as SwapRequests } from "./SwapRequest";
 export { default as SwapOrders } from "./SwapOrders";
 export { default as SelectBookToSwap } from "./SelectBookToSwap";
+
+export { default as EducationCategoryBook } from "./EducationCategoryBook";
+export { default as BusinessCategoryBook } from "./BusinessCategoryBook";
+export { default as BiographyCategoryBook } from "./BiographyCategoryBook";
+export { default as PhilosophyCategoryBook } from "./PhilosophyCategoryBook";
+export { default as ScienceCategoryBook } from "./ScienceCategoryBook";
+export { default as FictionCategoryBook } from "./FictionCategoryBook";

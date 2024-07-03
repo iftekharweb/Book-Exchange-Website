@@ -65,6 +65,11 @@ const links = [
         icon: <MdClass />,
       },
       {
+        name: "education",
+        role: ["ADMIN", "USER", "NONE"],
+        icon: <MdClass />,
+      },
+      {
         name: "business",
         role: ["ADMIN", "USER", "NONE"],
         icon: <FaBusinessTime />,
