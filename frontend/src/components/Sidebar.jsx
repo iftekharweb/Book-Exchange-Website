@@ -5,16 +5,21 @@ import { FaBookOpenReader, FaBusinessTime, FaPersonCircleQuestion } from "react-
 import { PiBrainFill } from "react-icons/pi";
 import { FiCodesandbox } from "react-icons/fi";
 import { ImProfile } from "react-icons/im";
+import { IoBook } from "react-icons/io5";
+import { FaBookReader } from "react-icons/fa";
+import { FaQuestion } from "react-icons/fa";
+import { FaCartShopping } from "react-icons/fa6";
+import { MdSwapHorizontalCircle } from "react-icons/md";
 
 import { useStateContext } from "../contexts/ContextProvider";
 import Full_logo from "../assets/Full_Logo.png";
 
 const links = [
   {
-    title: "Dashboard",
+    title: "Home Page",
     links: [
       {
-        name: "dashboard",
+        name: "home",
         role: ["ADMIN", "USER", "NONE"],
         icon: <MdSpaceDashboard />,
       },
@@ -32,27 +37,27 @@ const links = [
       {
         name: "user-books",
         role: ["USER"],
-        icon: <ImProfile />,
+        icon: <FaBookReader />,
       },
       {
         name: "book-requests",
         role: ["USER"],
-        icon: <ImProfile />,
+        icon: <FaQuestion />,
       },
       {
         name: "buy-orders",
         role: ["USER"],
-        icon: <ImProfile />,
+        icon: <FaCartShopping />,
       },
       {
         name: "swap-requests",
         role: ["USER"],
-        icon: <ImProfile />,
+        icon: <FaQuestion />,
       },
       {
         name: "swap-orders",
         role: ["USER"],
-        icon: <ImProfile />,
+        icon: <MdSwapHorizontalCircle />,
       },
     ],
   },
@@ -67,7 +72,7 @@ const links = [
       {
         name: "education",
         role: ["ADMIN", "USER", "NONE"],
-        icon: <MdClass />,
+        icon: <IoBook />,
       },
       {
         name: "business",

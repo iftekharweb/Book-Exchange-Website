@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import { Navbar, Footer, Sidebar } from "./components";
-import { Dashboard, Profile, Login, Signup, UserBooks, BookRequests, BuyOrders, AllGebresBook, SwapOrders, SwapRequests, SelectBookToSwap, EducationCategoryBook, BusinessCategoryBook, ScienceCategoryBook, BiographyCategoryBook, PhilosophyCategoryBook, FictionCategoryBook } from "./pages";
+import { Dashboard, Profile, Login, Signup, UserBooks, BookRequests, BuyOrders, AllGebresBook, SwapOrders, SwapRequests, SelectBookToSwap, EducationCategoryBook, BusinessCategoryBook, ScienceCategoryBook, BiographyCategoryBook, PhilosophyCategoryBook, FictionCategoryBook, TermsAndConditions, PrivacyPolicy } from "./pages";
 import { useStateContext } from "./contexts/ContextProvider";
 
 const AuthenticatedRoutes = () => {
@@ -52,7 +52,7 @@ const AuthenticatedRoutes = () => {
             <Routes>
               {/* Dashboard */}
               <Route path="/" element={<Dashboard />} />
-              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/home" element={<Dashboard />} />
 
               {/* Pages */}
               <Route path="/profile" element={<Profile />} />
@@ -71,6 +71,11 @@ const AuthenticatedRoutes = () => {
               <Route path="/biography" element={<BiographyCategoryBook />} />
               <Route path="/philosophy" element={<PhilosophyCategoryBook />} />
               <Route path="/fiction" element={<FictionCategoryBook />} />
+
+              {/*  */}
+              <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+
               <Route path="*" element={<Navigate to="/" />} />
             </Routes>
           </div>

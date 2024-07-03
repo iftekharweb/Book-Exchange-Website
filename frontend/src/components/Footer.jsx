@@ -1,6 +1,8 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const Footer = () => {
+  const navigate = useNavigate();
   return (
     <div className="w-full">
       <footer className="bg-[#FAFBFB]">
@@ -8,40 +10,39 @@ const Footer = () => {
           <div className="mt-2 border-t border-gray-100 pt-2 sm:flex sm:items-center sm:justify-between lg:mt-0">
             <ul className="flex flex-wrap justify-center gap-4 text-xs lg:justify-end">
               <li>
-                <a
-                  href="#"
+                <button
+                  onClick={() => {navigate("/terms-and-conditions")}}
                   className="text-gray-500 transition hover:opacity-75"
                 >
                   {" "}
                   Terms & Conditions{" "}
-                </a>
+                </button>
               </li>
 
               <li>
-                <a
-                  href="#"
+                <button
+                  onClick={() => {navigate("/privacy-policy")}}
                   className="text-gray-500 transition hover:opacity-75"
                 >
                   {" "}
                   Privacy Policy{" "}
-                </a>
+                </button>
               </li>
 
               <li>
-                <a
-                  href="#"
+                <button
                   className="text-gray-500 transition hover:opacity-75"
                 >
                   {" "}
-                  Cookies{" "}
-                </a>
+                  Developers{" "}
+                </button>
               </li>
             </ul>
 
             <ul className="mt-8 flex justify-center gap-6 sm:mt-0 lg:justify-end">
               <li>
                 <a
-                  href="#"
+                  href="https://www.facebook.com/iftikharmohammedshishir/"
                   rel="noreferrer"
                   target="_blank"
                   className="text-gray-700 transition hover:text-[#FF7F3E]"
@@ -65,7 +66,7 @@ const Footer = () => {
 
               <li>
                 <a
-                  href="#"
+                  href="https://www.instagram.com/iftekhar_md._shishir/"
                   rel="noreferrer"
                   target="_blank"
                   className="text-gray-700 transition hover:text-[#FF7F3E]"
@@ -109,7 +110,7 @@ const Footer = () => {
 
               <li>
                 <a
-                  href="#"
+                  href="https://github.com/iftekharweb/Book-Exchange-Website/"
                   rel="noreferrer"
                   target="_blank"
                   className="text-gray-700 transition hover:text-[#FF7F3E]"

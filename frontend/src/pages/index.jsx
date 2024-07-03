@@ -16,3 +16,6 @@ export { default as BiographyCategoryBook } from "./BiographyCategoryBook";
 export { default as PhilosophyCategoryBook } from "./PhilosophyCategoryBook";
 export { default as ScienceCategoryBook } from "./ScienceCategoryBook";
 export { default as FictionCategoryBook } from "./FictionCategoryBook";
+
+export {default as PrivacyPolicy } from "./PrivacyPolicy"
+export {default as TermsAndConditions } from "./TermsAndConditions"
