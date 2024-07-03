@@ -79,3 +79,7 @@ class User(AbstractBaseUser):
     def is_staff(self):
         "Is the user a member of staff?"
         return self.is_admin
+    
+class UserImage(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='images')
+    image = models.ImageField(upload_to='user/images')

@@ -1,6 +1,7 @@
 
 from . import serializers
 from . import models
+from . import renderers
 from rest_framework import status, viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -64,3 +65,30 @@ class UserProfileView(APIView):
 class UserViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.UserProfileSerializer
     queryset = models.User.objects.all()
+
+
+class UserChangePasswordView(APIView):
+    renderer_classes = [renderers.UserRenderer]
+    permission_classes = [IsAuthenticated]
+    def post(self, request, format=None):
+        serializer = serializers.UserChangePasswordSerializer(
+            data=request.data,
+            context={'user': request.user}
+        )
+        serializer.is_valid(raise_exception=True)
+        return Response(
+            {
+                'msg':'Change of Password Is Successful !'
+            }, 
+            status=status.HTTP_200_OK
+        )
+    
+class UserImageViewSet(viewsets.ModelViewSet):
+    def get_queryset(self):
+        return models.UserImage.objects.filter(user_id=self.kwargs['user_pk']).all()
+    
+    def get_serializer_class(self):
+        return serializers.UserImageSerializer
+    
+    def get_serializer_context(self):
+        return {'user_id': self.kwargs['user_pk']}
