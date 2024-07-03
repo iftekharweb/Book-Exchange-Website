@@ -3,8 +3,11 @@ import axios from "axios";
 import BookDetailsModal from "../modals/BookDetailsModal";
 import DBook from '../assets/d-book.jpg'
 import FullLogo from '../assets/Full_Logo.png'
+import { useStateContext } from "../contexts/ContextProvider";
 
 const Dashboard = () => {
+  const {started, setStarted} = useStateContext();
+  
   const [books, setBooks] = useState([]);
   const [filteredBooks, setFilteredBooks] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -15,7 +18,6 @@ const Dashboard = () => {
   const [currentBook, setCurrentBook] = useState({});
 
   const handleDetails = () => setCarding(!carding);
-  const [started, setStarted] = useState(false);
 
   const fetchBooks = async () => {
     try {

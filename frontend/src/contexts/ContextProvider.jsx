@@ -15,6 +15,8 @@ export const ContextProvider = ({ children }) => {
   const [bookToSwap, setBookToSwap] = useState({});
   const [reqToSwap, setReqToSwap] = useState({});
 
+  const [started, setStarted] = useState(false);
+
   const [log, setLog] = useState(false);
   const [sign, setSign] = useState(false);
 
@@ -99,7 +101,9 @@ export const ContextProvider = ({ children }) => {
         bookToSwap,
         setBookToSwap,
         reqToSwap,
-        setReqToSwap
+        setReqToSwap,
+        started,
+        setStarted
       }}
     >
       {children}
