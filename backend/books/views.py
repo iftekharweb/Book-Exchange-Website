@@ -90,6 +90,15 @@ class BuyBookViewSet(ModelViewSet):
     queryset = BuyBook.objects.all()
     serializer_class = BuyBookSerializer
 
+    def create(self, request, *args, **kwargs):
+        user_id = request.data.get('buyer_id')
+        book_id = request.data.get('book_id')
+        
+        if BuyBook.objects.filter(book_id=book_id, buyer_id=user_id).exists():
+            return Response({"error": "Duplicate buy request. The user has already requested to buy this book."}, status=status.HTTP_400_BAD_REQUEST)
+        
+        return super().create(request, *args, **kwargs)
+
 @api_view(['GET'])
 def buy_requests_by_user(request):
     user_id = request.query_params.get('user', None)
@@ -98,7 +107,7 @@ def buy_requests_by_user(request):
         serializer = BuyBookSerializer(buy_requests, many=True)
         return Response(serializer.data)
     else:
-        return Response({"error": "User ID not provided"}, status=400)
+        return Response({"error": "User ID not provided"}, status=status.HTTP_400_BAD_REQUEST)
     
 @api_view(['GET'])
 def buy_orders_by_user(request):
@@ -108,11 +117,20 @@ def buy_orders_by_user(request):
         serializer = BuyBookSerializer(buy_orders, many=True)
         return Response(serializer.data)
     else:
-        return Response({"error": "User ID not provided"}, status=400)
+        return Response({"error": "User ID not provided"}, status=status.HTTP_400_BAD_REQUEST)
     
 class SwapBookViewSet(ModelViewSet):
     queryset = SwapBook.objects.all()
     serializer_class = SwapBookSerializer
+
+    def create(self, request, *args, **kwargs):
+        user_id = request.data.get('buyer_id')
+        book_id = request.data.get('book_id')
+        
+        if SwapBook.objects.filter(book_id=book_id, buyer_id=user_id).exists():
+            return Response({"error": "Duplicate swap request. The user has already requested to swap this book."}, status=status.HTTP_400_BAD_REQUEST)
+        
+        return super().create(request, *args, **kwargs)
     
 @api_view(['GET'])
 def swap_requests_by_user(request):
@@ -122,7 +140,7 @@ def swap_requests_by_user(request):
         serializer = SwapBookSerializer(swap_requests, many=True)
         return Response(serializer.data)
     else:
-        return Response({"error": "User ID not provided"}, status=400)
+        return Response({"error": "User ID not provided"}, status=status.HTTP_400_BAD_REQUEST)
     
 @api_view(['GET'])
 def swap_orders_by_user(request):
@@ -132,4 +150,4 @@ def swap_orders_by_user(request):
         serializer = SwapBookSerializer(swap_orders, many=True)
         return Response(serializer.data)
     else:
-        return Response({"error": "User ID not provided"}, status=400)
+        return Response({"error": "User ID not provided"}, status=status.HTTP_400_BAD_REQUEST)
