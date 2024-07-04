@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { MdOutlineCancel } from "react-icons/md";
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import { useStateContext } from "../contexts/ContextProvider";
 
 const BookDetailsModal = ({ handleDetails, book }) => {
@@ -29,10 +32,14 @@ const BookDetailsModal = ({ handleDetails, book }) => {
         buyer_id: authUserId,
       },);
       if(res.data) {
-        alert("This book is requested for buying.");
+        toast.success("Buy request has been sent for this book", { autoClose: 2000 });
+        setTimeout(() => {
+          handleDetails();
+        }, 2000);
       } 
     } catch (error) {
       console.error(error);
+      toast.error("This book is already requested for buying");
     }
   }
 
@@ -45,15 +52,20 @@ const BookDetailsModal = ({ handleDetails, book }) => {
         buyer_id: authUserId,
       },);
       if(res.data) {
-        alert("This book is requested for exchanging.");
+        toast.success("Swap request has been sent for this book", { autoClose: 2000 });
+        setTimeout(() => {
+          handleDetails();
+        }, 2000);
       } 
     } catch (error) {
       console.error(error);
+      toast.error("This book is already requested for exchanging");
     }
   }
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center">
+      <ToastContainer />
       <div className="bg-white py-5 px-8 rounded-xl w-[40%]">
         <div>
           <div className="flex justify-between items-center pb-3">

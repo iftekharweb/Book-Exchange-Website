@@ -4,11 +4,14 @@ import axios from "axios";
 import books2 from "../assets/books2.jpg";
 import Full_logo from "../assets/Full_Logo.png";
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import { useStateContext } from "../contexts/ContextProvider";
 import { useNavigate } from "react-router-dom";
 
 const Login = ({ handleSwitch }) => {
-  const { setAuthToken, fetchUser, changeLog } = useStateContext();
+  const { setAuthToken, fetchUser, changeLog, changeSign } = useStateContext();
 
   const navigate = useNavigate();
 
@@ -33,12 +36,18 @@ const Login = ({ handleSwitch }) => {
       if (res.data) {
         const data = res.data;
         localStorage.setItem("token", data.token.access);
-        setAuthToken(data.token.access);
-        changeLog();
-        navigate("/");
+        toast.success("Login successful! Redirecting...", { autoClose: 3000 });
+        setTimeout(() => {
+          setAuthToken(data.token.access);
+          changeLog();
+          navigate("/");
+        }, 3000);
       }
     } catch (error) {
       console.error(error);
+      if (error.response) {
+        toast.error("Invalid email or password. Please try again.");
+      }
     }
   };
 
@@ -66,6 +75,7 @@ const Login = ({ handleSwitch }) => {
 
   return (
     <div>
+      <ToastContainer />
       <section className="relative flex flex-wrap lg:h-screen lg:items-center">
         <div className="w-full px-4 py-12 sm:px-6 sm:py-16 lg:w-1/2 lg:px-8 lg:py-24">
           <div className="mx-auto max-w-lg text-center">
@@ -163,7 +173,7 @@ const Login = ({ handleSwitch }) => {
             <div className="flex items-center justify-between">
               <p className="text-sm text-gray-500">
                 No account?
-                <button className="underline px-1" onClick={handleSwitch}>
+                <button className="underline px-1" onClick={changeSign}>
                   Sign up
                 </button>
               </p>

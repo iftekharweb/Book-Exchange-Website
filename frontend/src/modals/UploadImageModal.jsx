@@ -3,6 +3,9 @@ import axios from "axios";
 import { MdOutlineCancel } from "react-icons/md";
 import { useStateContext } from "../contexts/ContextProvider";
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const UploadImageModal = ({ handleImageAdding, fetchUser, images }) => {
   const {authUserId} = useStateContext();
 
@@ -33,8 +36,11 @@ const UploadImageModal = ({ handleImageAdding, fetchUser, images }) => {
             }
           )]
         );
-        fetchUser();
-        handleImageAdding();
+        toast.success("Profile picture has been changed", { autoClose: 2000 });
+        setTimeout(() => {
+          fetchUser();
+          handleImageAdding();
+        }, 2000);
       } else {
         const res = await axios.post(
           `${import.meta.env.VITE_BASEURL}/users/${authUserId}/images/`,
@@ -45,18 +51,21 @@ const UploadImageModal = ({ handleImageAdding, fetchUser, images }) => {
             },
           }
         );
-        fetchUser();
-        handleImageAdding();
+        toast.success("Profile picture has been uploaded", { autoClose: 2000 });
+        setTimeout(() => {
+          fetchUser();
+          handleImageAdding();
+        }, 2000);
       }
     } catch (error) {
-      fetchUser();
-      handleImageAdding();
+      toast.error("Something is wrong while uploading!");
       console.error(error);
     }
   };
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center">
+      <ToastContainer />
       <div className="bg-white py-5 px-8 rounded-xl w-[40%]">
         <div>
           <div className="flex justify-between items-center pb-3">

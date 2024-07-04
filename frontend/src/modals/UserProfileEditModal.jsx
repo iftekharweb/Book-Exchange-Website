@@ -3,6 +3,9 @@ import axios from "axios";
 import { MdOutlineCancel } from "react-icons/md";
 import { useStateContext } from "../contexts/ContextProvider";
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const UserProfileEditModal = ({ handleEditProfile, user, fetchUser }) => {
   const { authToken, authUserId } = useStateContext();
 
@@ -38,18 +41,21 @@ const UserProfileEditModal = ({ handleEditProfile, user, fetchUser }) => {
         }
       );
       if (res.data) {
-        alert("Profile updated successfully!");
-        fetchUser();
-        handleEditProfile();
+        toast.success("Profile info updated successfully", { autoClose: 2000 });
+        setTimeout(() => {
+          fetchUser();
+          handleEditProfile();
+        }, 2000);
       }
     } catch (error) {
       console.error(error);
-      alert("Failed to update profile. Please try again.");
+      toast.error("Failed to update profile. Please try again.");
     }
   };
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center">
+      <ToastContainer />
       <div className="bg-white py-5 px-8 rounded-xl w-[40%]">
         <div className="flex justify-between items-center pb-3">
           <div className="py-2">

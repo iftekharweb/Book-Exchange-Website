@@ -5,6 +5,9 @@ import FullLogo from "../assets/Full_Logo.png";
 import { useStateContext } from "../contexts/ContextProvider";
 import { useNavigate } from "react-router-dom";
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const ConfirmSwapModal = ({ handleDetails, book }) => {
   const { authUserId, bookToSwap, reqToSwap } = useStateContext();
   const navigate = useNavigate();
@@ -38,7 +41,6 @@ const ConfirmSwapModal = ({ handleDetails, book }) => {
     fetchUser();
   }, []);
 
-  //
   const deleteTheBook = async (reqId, type) => {
     try {
       if (type === 1) {
@@ -71,16 +73,23 @@ const ConfirmSwapModal = ({ handleDetails, book }) => {
         allBuyReqs.forEach((x) => {
           if (x.book.id === theBook.id || x.book.id === book.id) deleteTheBook(x.id, 100);
         });
-        navigate("/swap-requests");
+        toast.success("These two books are exchanged Successfully", { autoClose: 2000 });
+        setTimeout(() => {
+          navigate("/swap-requests");
+        }, 2000);
       }
     } catch (error) {
       console.error(error);
+      toast.error("Something is wrong!", { autoClose: 2000 });
+      setTimeout(() => {
+        navigate("/swap-requests");
+      }, 2000);
     }
   };
-  //
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center">
+      <ToastContainer />
       <div className="bg-white py-5 px-8 rounded-xl w-[70%]">
         <div>
           <div className="flex justify-between items-center pb-3">

@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { MdOutlineCancel } from "react-icons/md";
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const AddBookModal = ({ handleAdd, user , fetchBooks}) => {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
@@ -40,13 +43,17 @@ const AddBookModal = ({ handleAdd, user , fetchBooks}) => {
         },
       });
       if (res.data) {
-        console.log("Image is uploaded successfully");
-        handleAdd();
-        fetchBooks()
+        toast.success("Book with it's image has been added successfully", { autoClose: 2000 });
+        setTimeout(() => {
+          handleAdd();
+          fetchBooks()
+        }, 2000);
+        
       } else {
-        console.log("Image is not uploaded!");
+        toast.error("Image is not uploaded!");
       }
     } catch (error) {
+      toast.error("Image is not uploaded!");
       console.error("Error uploading image:", error);
     }
   };
@@ -68,11 +75,13 @@ const AddBookModal = ({ handleAdd, user , fetchBooks}) => {
       }
     } catch (error) {
       console.error(error);
+      toast.error("Somting is wrong! Don't forget to fill all the fields");
     }
   };
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center">
+      <ToastContainer />
       <div className="bg-white py-5 px-8 rounded-xl w-[40%]">
         <div>
           <div className="flex justify-between items-center pb-3">

@@ -3,17 +3,19 @@ import axios from "axios";
 import { MdOutlineCancel } from "react-icons/md";
 import { useStateContext } from "../contexts/ContextProvider";
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const ChangePasswordModal = ({ handleChangePassword }) => {
-  const {authToken} = useStateContext();
+  const { authToken } = useStateContext();
 
   const [old_password, setOld_password] = useState("");
   const [new_password, setNew_password] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if(old_password === new_password) {
-      alert("Old and new password must be different!");
+    if (old_password === new_password) {
+      toast.error("Old and new password must be different!");
       return;
     }
     const postData = {
@@ -21,22 +23,30 @@ const ChangePasswordModal = ({ handleChangePassword }) => {
       new_password,
     };
     try {
-      const res = await axios.post(`${import.meta.env.VITE_BASEURL}/change-password/`, postData, {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
+      const res = await axios.post(
+        `${import.meta.env.VITE_BASEURL}/change-password/`,
+        postData,
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
         }
-      });
-      if(res.data) {
-        alert("Password Changed successfully!")
+      );
+      if (res.data) {
+        toast.success("Password Changed successfully", { autoClose: 2000 });
+        setTimeout(() => {
+          handleChangePassword();
+        }, 2000);
       }
     } catch (error) {
       console.error(error);
+      toast.error("Old password is not correct!");
     }
-
   };
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center">
+      <ToastContainer />
       <div className="bg-white py-5 px-8 rounded-xl w-[40%]">
         <div>
           <div className="flex justify-between items-center pb-3">
@@ -61,7 +71,7 @@ const ChangePasswordModal = ({ handleChangePassword }) => {
                 Old Password
               </label>
               <input
-                type="text"
+                type="password"
                 id="old_password"
                 name="old_password"
                 className="py-2 px-3 mt-1 w-full border border-gray-300 rounded-md shadow-sm"
@@ -79,7 +89,7 @@ const ChangePasswordModal = ({ handleChangePassword }) => {
                 New Password
               </label>
               <input
-                type="text"
+                type="password"
                 id="new_password"
                 name="new_password"
                 className="py-2 px-3 mt-1 w-full border border-gray-300 rounded-md shadow-sm"

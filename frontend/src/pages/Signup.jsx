@@ -4,10 +4,13 @@ import axios from "axios";
 import books1 from "../assets/books1.jpg";
 import Full_logo from "../assets/Full_Logo.png";
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import { useStateContext } from "../contexts/ContextProvider";
 
 const Signup = () => {
-  const {authToken, changeLog, changeSign, setAuthToken} = useStateContext();
+  const { authToken, changeLog, changeSign, setAuthToken } = useStateContext();
   // State for all fields
   const [fname, setFname] = useState("");
   const [lname, setLname] = useState("");
@@ -22,7 +25,7 @@ const Signup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if(password != confirmPassword) return;
+    if (password != confirmPassword) return;
 
     const name = `${fname} ${lname}`;
 
@@ -34,29 +37,38 @@ const Signup = () => {
       upazilla: upazila,
       gender,
       date_of_birth: dateOfBirth,
-      password
+      password,
     };
 
     try {
-      const res = await axios.post(`${import.meta.env.VITE_BASEURL}/register/`, userData, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const res = await axios.post(
+        `${import.meta.env.VITE_BASEURL}/register/`,
+        userData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       if (res.data) {
         const data = res.data;
         localStorage.setItem("token", data.token.access);
-        setAuthToken(data.token.access);
-        changeSign();
-        navigate("/");
+        toast.success("Signup successful! Redirecting...", { autoClose: 3000 });
+        setTimeout(() => {
+          setAuthToken(data.token.access);
+          changeSign();
+          navigate("/");
+        }, 3000);
       }
     } catch (error) {
+      toast.error("Registration failed. Please try again.");
       console.error(error);
     }
   };
 
   return (
     <div>
+      <ToastContainer />
       <section className="bg-white">
         <div className="lg:grid lg:min-h-screen lg:grid-cols-12">
           <section className="relative flex h-32 items-end bg-gray-900 lg:col-span-5 lg:h-full xl:col-span-6">

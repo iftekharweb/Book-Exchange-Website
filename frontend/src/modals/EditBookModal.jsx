@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { MdOutlineCancel } from "react-icons/md";
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const EditBookModal = ({ handleEdit, user, fetchBooks, book }) => {
   const [title, setTitle] = useState(book.title);
   const [author, setAuthor] = useState(book.author);
@@ -35,9 +38,12 @@ const EditBookModal = ({ handleEdit, user, fetchBooks, book }) => {
 
   const uploadImage = async (bookId, imageFile) => {
     if (preImage === image) {
+      toast.success("Book info has been changed", { autoClose: 2000 });
+      setTimeout(() => {
         handleEdit();
         fetchBooks();
-        return;
+      }, 2000);
+      return;
     }
     const dltImgId = book.images[0].id;
     try {
@@ -66,14 +72,21 @@ const EditBookModal = ({ handleEdit, user, fetchBooks, book }) => {
         )
       );
       if (postImg.data) {
-        console.log("Image is uploaded successfully");
-        handleEdit();
-        fetchBooks();
+        toast.success("Book info has been changed", { autoClose: 2000 });
+        setTimeout(() => {
+          handleEdit();
+          fetchBooks();
+        }, 2000);
       } else {
-        console.log("Image is not uploaded!");
+        toast.error(
+          "Something is wrong! Uploaded image of the book is not changed"
+        );
       }
     } catch (error) {
       console.error("Error uploading image:", error);
+      toast.error(
+        "Something is wrong! Uploaded image of the book is not changed"
+      );
     }
   };
 
@@ -109,6 +122,7 @@ const EditBookModal = ({ handleEdit, user, fetchBooks, book }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center">
+      <ToastContainer />
       <div className="bg-white py-5 px-8 rounded-xl w-[40%]">
         <div>
           <div className="flex justify-between items-center pb-3">
