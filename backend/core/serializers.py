@@ -23,7 +23,7 @@ class UseLogInSerializer(serializers.ModelSerializer):
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'date_of_birth','gender', 'district', 'upazilla', 'phone', 'name', 'is_admin']
+        fields = ['id', 'date_of_birth', 'email', 'gender', 'district', 'upazilla', 'phone', 'name', 'is_admin']
         read_only_fields = ['id']
 
 class UserChangePasswordSerializer(serializers.ModelSerializer):
