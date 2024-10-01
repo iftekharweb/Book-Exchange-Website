@@ -50,7 +50,7 @@ const YourSwapOrders = () => {
     <div className="py-5 px-10">
       <div className="pb-5">
         <p className="text-3xl font-semibold">
-          You Book Exchange Requests
+          Your Book Exchange Requests
         </p>
       </div>
       <div className="rounded-lg border border-gray-200">

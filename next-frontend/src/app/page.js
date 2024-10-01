@@ -25,13 +25,12 @@ export default function Home() {
             Exchange And Buy
             <strong className="font-extrabold text-[#FF7F3E] sm:block">
               {" "}
-              Book Mark{" "}
+              Book Mart{" "}
             </strong>
           </h1>
 
           <p className="mt-4 sm:text-xl/relaxed">
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nesciunt
-            illo tenetur fuga ducimus numquam ea!
+          A non-profit app that simplifies buying and exchanging books. Connect with fellow readers to share literature without profit motives, promoting a culture of knowledge sharing and community.
           </p>
 
           <div className="mt-8 flex flex-wrap justify-center gap-4">
